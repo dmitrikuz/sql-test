@@ -59,3 +59,6 @@ $$ LANGUAGE plpgsql;
 
 
 SELECT * FROM get_monthly_sums();
+
+
+
