@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS PDCL;
+GO
+CREATE TABLE PDCL(
+  date DATE,
+  customer INTEGER,
+  deal INTEGER,
+  currency CHAR(3),
+  sum INTEGER
+);
