@@ -5,8 +5,8 @@
   - сами запросы
   - скриншоты их выполнения в среде DBeaver
 
-Используемые СУБД:
-- 1 задание: PostgreSQL
-- 2 задание: Microsoft SQL Server
-- 3 Задание: PostgreSQL
-- 4 Задание: PostgreSQL
+Используемые диалекты SQL:
+- 1 Задание: PL/pgSQL
+- 2 Задание: T-SQL
+- 3 Задание: PL/pgSQL
+- 4 Задание: PL/pgSQL
