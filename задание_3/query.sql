@@ -15,27 +15,27 @@ CREATE OR REPLACE FUNCTION get_monthly_sums() RETURNS TABLE(month_date TEXT, mon
 	-- Например 5 дней с начала месяца - коэфф 5/7, 20 дней с начала месяца - коэфф 1
 		WITH Coeffs AS (
 			SELECT
-		    	date,
-		    	sum,
-		    	CASE
-		      		WHEN days_since_month(date) < 7 THEN days_since_month(date) / 7.0
-		     		ELSE 1
-		    	END coeff
+				date,
+				sum,
+				CASE
+					WHEN days_since_month(date) < 7 THEN days_since_month(date) / 7.0
+					ELSE 1
+				END coeff
 		  	FROM
-		    	(SELECT * FROM WeeklySums UNION SELECT (MAX(date) + INTERVAL '1 MONTH')::DATE, 0.0 FROM WeeklySums)
+				(SELECT * FROM WeeklySums UNION SELECT (MAX(date) + INTERVAL '1 MONTH')::DATE, 0.0 FROM WeeklySums)
 		),
-		-- Вычислим и сопоставим на каждую неделю текущую сумму + коэфф. и следующую сумму + коэфф.
+	-- Вычислим и сопоставим на каждую неделю текущую сумму + коэфф. и следующую сумму + коэфф.
 		Future AS(
 			SELECT
-		    	date,
-		    	sum,
-		    	coeff,
-		    	COALESCE(LEAD(sum) OVER (ORDER BY date), 0) AS next_sum,
-		    	COALESCE(LEAD(1 - coeff) OVER (ORDER BY date), 0) AS next_coeff
+				date,
+				sum,
+				coeff,
+				COALESCE(LEAD(sum) OVER (ORDER BY date), 0) AS next_sum,
+				COALESCE(LEAD(1 - coeff) OVER (ORDER BY date), 0) AS next_coeff
 		  	FROM 
-		    	Coeffs
+				Coeffs
 		),
-		-- Аггрегация и вычисления сумм по месяцам
+	-- Аггрегация и вычисления сумм по месяцам
 		Unformated AS (
 			SELECT
 				(DATE_TRUNC('MONTH', date) + INTERVAL '1 MONTH' -  INTERVAL '1 DAY')::DATE month_date,
